@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-// Torrent represents an entry on the nyaa.si website
+// Torrent represents a torrent entry on the nyaa.si website
 type Torrent struct {
 	// TODO
 
@@ -14,7 +14,7 @@ type Torrent struct {
 	Title    string
 	Size     string
 
-	MagnetLink  string
+	MagnetLink  string // both MagnetLink and TorrentLink CAN be empty
 	TorrentLink string
 
 	Timestamp time.Time

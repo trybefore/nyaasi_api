@@ -1,6 +1,9 @@
 package nyaasi
 
-import "testing"
+import (
+	"testing"
+	"time"
+)
 
 func TestAPISearch(t *testing.T) {
 
@@ -13,9 +16,13 @@ func TestAPISearch(t *testing.T) {
 
 	}(t)
 
+	ticker := time.NewTicker(time.Second * 1)
+
 outer:
 	for {
 		select {
+		case <-ticker.C:
+			break outer
 		case torrent, ok := <-torrents:
 			if !ok {
 				break outer
@@ -24,6 +31,8 @@ outer:
 
 		}
 	}
+
+	ticker.Stop()
 
 }
 
@@ -44,11 +53,22 @@ func TestAPISearchPage(t *testing.T) {
 		}
 	}(t)
 
+	ticker := time.NewTicker(time.Second * 1)
+
+outer:
 	for {
 		select {
-		case torrent := <-torrents:
+		case <-ticker.C:
+			break outer
+		case torrent, ok := <-torrents:
+			if !ok {
+				break outer
+			}
 			t.Logf("[%v] %s", torrent.Timestamp, torrent.Title)
+
 		}
 	}
+
+	ticker.Stop()
 
 }
